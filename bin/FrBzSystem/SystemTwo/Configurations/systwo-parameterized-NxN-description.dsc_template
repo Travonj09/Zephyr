@@ -1,0 +1,268 @@
+// Description file template used for generating a ___AUTO_INSERT_SIZE_HERE___ by ___AUTO_INSERT_SIZE_HERE___ target system.
+// Based on the systwo-8x8-description.dsc file.
+
+// Called from runSystemNxNMainSim.java.
+
+// Cloned from system-one-descr.txt of SystemOneTestRev
+
+// Description of Fresh Breeze System One
+// ======================================
+// August 29, 2012 - Jack Dennis
+//
+// Revision: November 19, 2012
+// Revision: November 27, 2012
+//
+
+// First Test System including a single ProcessorCore
+// with Core scheduler, Auto Buffer and one Memory Unit
+
+// First Test System including a single ProcessingUnit
+// with Core scheduler, and one Memory Unit
+
+
+// Two Processing Units and Two Memory Units
+//          Start
+//          +----+
+//       +--+ 0  |
+//       |  |    |
+//  +----|--+ 1  +
+//  |    |  +----+
+//  |    |
+//  |    |  +-----------------------------------------+
+//  |    |  |  Initializer                            |
+//  |    |  |   +------+                              |
+//  |    +--+-->+ 0  0 +---------------+              |
+//  |           |    1 +---------+     |              |
+//  |       +-->+ 1  2 +--+      |     |              |
+//  |       |   +------+  |      |     |  .......................
+//  |       |             |      |     |  . ProcUnit0 |         .
+//  |       |             |      |     |  .  +------+ |         .
+//  |       |             |      |     |  ..>+ 0  0 +-------------+
+//  |       |             |      |   +------>+ 1  1 +.|....     . |
+//  |       +----------------------+ | | +-->+ 2  2 +---+ .     . |
+//  |          Scheduler0 |      | | | +-|-->+ 3  3 +-+ | .     . |
+//  |           +------+  |      | | |   |   +------+   | .     . |
+//  |    ......>+ 0  0 +-------------+   +--------------+ .     . |   P2MRouter     MemUnit0
+//  |  +-.----->+ 1  1 +--|----+ | |                      .     . |    +-----+       +-----+
+//  |  | . +--->+ 2  2 +-----+ | | |                      .     . +--->+ 0 0 +------>+ 0 0 +--+
+//  |  | . |    +------+  |  | | | |                      .     .      |     |       +-----+  |
+//  |  | ..................................................     . +--->+ 1 1 +.....           |
+//  |  |   |              |  | | | |                            . |    +-----+    .           |
+//  |  |   | LoadBalancer |  | | | |                            . |             +-.-----------+
+//  |  |   |    +------+  |  | | | +------------------+         . |   M2PRouter | . MemUnit1
+//  |  +---|----+ 0  0 +<-|--|-+ |                    |         . |    +-----+  | .  +-----+
+//  |    +-|--->+ 1  1 +<.|..|   +---+    ............|.......  .......+ 0 0 +<-+ ..>+ 0 0 +--+
+//  +----|-|--->+ N    |  | .|       |    . ProcUnit1 |      .    |    |     |       +-----+  |
+//       | |    |   N+3+<-+ .|       |    .  +------+ |      .    |  ..+ 1 1 +<---------------+
+//       | |    +------+    .|       |    ..>+ 0  0 +-|-----------+  . +-----+
+//       | | +---------------+  +----------->+ 1  1 +.|....  .       .
+//       | | |              .   |    |   +-->+ 2  2 +---+ .  .       .
+//       | | |              .   |    ----|-->+ 3  3 +-+ | .  .       .
+//       | | | Scheduler1   .   |        |   +------+   | .  .       .
+//       | | |  +------+    .   |        |              | .   ........
+//     ..|.....>+ 0  0 +--------+        +--------------+ .
+//     . +-|-|->+ 1  1 +.....                             .
+//     .   | +->+ 2  2 +---+                              .
+//     .   |    +------+   |                              .
+//     .   |               |                              .
+//     .   +---------------+                              .
+//     ....................................................
+//
+//
+//
+//
+//  2x2 Router
+//  ==========
+//
+//    Distributer0         Arbiter0
+//      +------+           +------+
+//    ->+ 0  0 +>+++++++++>+ 0  0 +>
+//      |      |           |      |
+//      |      |           |      |
+//      |    1 +>++     ..>+ 1    |
+//      +------+   +   .   +------+
+//                  + .
+//                   +
+//    Distributer1  . +    Arbiter1
+//      +------+   .   +   +------+
+//    ->+ 0  0 +>..     ++>+ 0  0 +>
+//      |      |           |      |
+//      |      |           |      |
+//      |    1 +>.........>+ 1    |
+//      +------+           +------+
+//
+//
+//
+//  4x4 Configuration with 8 2x2 routers for the 2 4x4 routing network (4 2x2 in each 4x4 routing network)
+//  ======================================================================================================
+//
+//                                       P2MStage0                    P2MStage1
+//      Proc0                             Router0                      Router0                           MemUnit0
+//     +------+ ABOut0                    +------+                     +------+                  MemIn0  +------+
+//     |    0 +>+++++++++++++++++++++++++>+ 0  0 +>+++++++++++++++++++>+ 0  0 +>++++++++++++++++++++++++>+      |
+//     |      |                           |      |                     |      |                          |      |
+//     |      | ABIn0                     |      |                     |      |                  MemOut0 |      |
+//     |    0 +<********     ++++++++++++>+ 1  1 +>++     ++++++++++++>+ 1  1 +>++              ********<+ 0    |
+//     +------+         *   +             +------+   +   +             +------+   +            *         +------+
+//                       * +                          + +                          +          *
+//                        +              P2MStage0     +              P2MStage1     +        *
+//      Proc1            + *              Router1     + +              Router1       +      *            MemUnit1
+//     +------+ ABOut1  +   *             +------+   +   +             +------+       +    *     MemIn1  +------+
+//     |    0 +>++++++++     *  +++++++++>+ 0  0 +>++     ++++++++++++>+ 0  0 +>+++    +++*+++++++++++++>+ 0    |
+//     |      |               *+          |      |                     |      |    +     *               |      |
+//     |      | ABIn1         +*          |      |                     |      |     +   *        MemOut1 |      |
+//     |    0 +<*******      +  *     +++>+ 1  1 +>+++++++++++++++++++>+ 1  1 +>+    + *        ********<+ 0    |
+//     +------+        *    +    *   +    +------+                     +------+  +    *        *         +------+
+//                      *  +      * +                                             +  * +      *
+//                       *+        *     M2PStage1                    M2PStage0    +*   +    *
+//      Proc2            +*       + *     Router0                      Router0     *+    +  *            MemUnit2
+//     +------+ ABOut2  +  *     +   *    +------+                     +------+   *  +    +*     MemIn2  +------+
+//     |    0 +>++++++++    *   +     ***<+ 0  0 +<*******************<+ 0  0 +<**    +   *+++++++++++++>+ 0    |
+//     |      |              * +          |      |                     |      |        + *               |      |
+//     |      | ABIn2         +           |      |                     |      |         *        MemOut2 |      |
+//     |    0 +<********     + **********<+ 1  1 +<**     ************<+ 1  1 +<******** +  ************<+ 0    |
+//     +------+         *   +             +------+   *   *             +------+           +*             +------+
+//                       * +                          * *                                 *+
+//                        +              M2PStage1     *              M2PStage0          *  +
+//      Proc3            + *              Router1     * *              Router1          *    +           MemUnit3
+//     +------+ ABOut3  +   *             +------+   *   *             +------+        *      +  MemIn3  +------+
+//     |    0 +>++++++++     ************<+ 0  0 +<**     ************<+ 0  0 +<*******        +++++++++>+ 0    |
+//     |      |                           |      |                     |      |                          |      |
+//     |      | ABIn3                     |      |                     |      |                  MemOut3 |      |
+//     |    0 +<*************************<+ 1  1 +<*******************<+ 1  1 +<************************<+ 0    |
+//     +------+                           +------+                     +------+                          +------+
+//
+//
+
+systemtwo SysTwo___AUTO_INSERT_SIZE_HERE___x___AUTO_INSERT_SIZE_HERE___DotProduct {
+
+   // Declarations
+
+   //  2x2 Router
+   //  ==========
+   //
+   //      dists[0]            arbs[0]
+   //      +------+           +------+
+   //    ->+ 2  0 +>+++++++++>+ 0  2 +>
+   //      |      |           |      |
+   //      |      |           |      |
+   //      |    1 +>++     ..>+ 1    |
+   //      +------+   +   .   +------+
+   //                  + .
+   //                   +
+   //      dists[1]    . +     arbs[1]
+   //      +------+   .   +   +------+
+   //    ->+ 2  0 +>..     ++>+ 0  2 +>
+   //      |      |           |      |
+   //      |      |           |      |
+   //      |    1 +>.........>+ 1    |
+   //      +------+           +------+
+
+___AUTO_INSERT_NETWORK_DESCRIPTION_HERE___
+
+   end;
+   } nodes {
+
+   // Node Declarations (Component Instances) (componentClass, optional_coreIndex)
+   component Start (SysTwoStart);
+   component Initializer (SysTwoInitializer, 0, ___AUTO_INSERT_SIZE_HERE___, ___AUTO_INSERT_SIZE_HERE___); // set dummy coreidx to 0, input/ouput data port count to size);
+
+   // ___AUTO_INSERT_SIZE_HERE___ (= size) Processing Units
+   ensemble Cores (___AUTO_INSERT_SIZE_HERE___, component, SysTwoProcessingUnit);  // (number of components, component or module, className, optional-coreIndex)
+   ensemble Schedulers (___AUTO_INSERT_SIZE_HERE___, component, SysTwoCoreSched);
+   component LoadBalancer (SysTwoLoadBalancer, 0, ___AUTO_INSERT_SIZE_HERE___, ___AUTO_INSERT_SIZE_HERE___); // set dummy coreidx to 0, input/ouput data port count to size);
+
+
+   // ___AUTO_INSERT_SIZE_EXPONENT_HERE___ columns of ___AUTO_INSERT_SIZE_HERE___ 2x2 routers, one for each stage of the routing network
+
+   // Processing units to memory units (memory commands) direction ___AUTO_INSERT_SIZE_HERE___x___AUTO_INSERT_SIZE_HERE___ (___AUTO_INSERT_SIZE_EXPONENT_HERE___ stages of ___AUTO_INSERT_SIZE_HERE___ 2x2 routers)
+   module P2MNetwork (CommandNetwork);
+
+   // Memory units to processing units (memory responses) direction ___AUTO_INSERT_SIZE_HERE___x___AUTO_INSERT_SIZE_HERE___ (___AUTO_INSERT_SIZE_EXPONENT_HERE___ stages of ___AUTO_INSERT_SIZE_HERE___ 2x2 routers)
+   module M2PNetwork (ResponseNetwork);
+
+   // TaskRecordNetwork: interconnecting the core schedulers
+   module BalancingNetwork(TaskRecordNetwork);
+
+   // ___AUTO_INSERT_SIZE_HERE___ (= size) Memory Banks
+   ensemble MemUnits (___AUTO_INSERT_SIZE_HERE___, component, SysTwoMemUnit);
+
+   } // end of node specifications
+
+
+   // Connections
+   connections {
+
+      set 2 * ___AUTO_INSERT_SIZE_HERE___ => twoTimesNumberOfProcessingUnits;
+
+      // Processing Units
+
+      Start[0] => Initializer[0];       // StartSim
+
+      // Connection to initiate load balancing from Start (shared with LB continue port)
+      Start[1]  => LoadBalancer[twoTimesNumberOfProcessingUnits];
+
+      // Connection to stop load balancing from the Initializer
+//      Initializer[___AUTO_INSERT_SIZE_HERE___]  => LoadBalancer[twoTimesNumberOfProcessingUnits + 1]; // BalancerStop
+      Initializer[___AUTO_INSERT_SIZE_HERE___]  => LoadBalancer[twoTimesNumberOfProcessingUnits + 1]; // BalancerStop
+
+      // Connection to continue load balancing
+      LoadBalancer[ twoTimesNumberOfProcessingUnits]  => LoadBalancer[twoTimesNumberOfProcessingUnits];
+
+      for (0 .. ___AUTO_INSERT_SIZE_HERE___ - 1) => c {
+          Initializer[c] => Cores[c][3];     // SimInit, StartSim
+          Cores[c][3]  => Initializer[c];    // InitDone
+
+          Schedulers[c][0] => Cores[c][1]; // SchedDataItem
+
+          Cores[c][1] => Schedulers[c][0]; // SchedDataItem
+          Cores[c][2] => Cores[c][2];      // ProcDataItem
+
+          // Connect the LoadBalancer to the CoreSchedulers
+          LoadBalancer[c]    => Schedulers[c][1];  // SchedTake
+//          Schedulers[c][1] => LoadBalancer[___AUTO_INSERT_SIZE_HERE___ + 1];  // SendToAck
+          Schedulers[c][1] => LoadBalancer[___AUTO_INSERT_SIZE_HERE___ + c];  // SendToAck (ack for SchedTake received from Load Balancer)
+
+          Schedulers[c][4] => LoadBalancer[c];  // SchedLoad
+	  LoadBalancer[___AUTO_INSERT_SIZE_HERE___ + c] => Schedulers[c][5]; // Ack for SchedLoad
+
+          // Connections for the Task Record Network
+          // To the Task Record Network from Core Schedulers
+          Schedulers[c][2]             =>   BalancingNetwork[c]; // TaskRecord
+          BalancingNetwork[c+___AUTO_INSERT_SIZE_HERE___]  =>   Schedulers[c][2];       // Acknowledgement
+
+          // Connect Cores to CoreSchedulers RESUME ports
+          Cores[c][6] => Schedulers[c][4]; // RESUME command
+
+          // To the Core Schedulers from the Task Record Network
+          BalancingNetwork[c]  =>   Schedulers[c][3];         // TaskRecord
+          Schedulers[c][3]     =>   BalancingNetwork[c+___AUTO_INSERT_SIZE_HERE___]; // Acknowledgement
+
+          // The BalancingStop signal from the cores to the LoadBalancer
+          Cores[c][5] => LoadBalancer[twoTimesNumberOfProcessingUnits + 2];
+
+	  // Memory continue links
+	  MemUnits[c][2] => MemUnits[c][2]; // MemoryContinueDataItem
+
+          // Connect the processors to the inputs of the forward ___AUTO_INSERT_SIZE_HERE___x___AUTO_INSERT_SIZE_HERE___ (processors to memory units, stage 0 or input stage)
+          Cores[c][0]         => P2MNetwork[c];  // Data
+          P2MNetwork[c+___AUTO_INSERT_LOWER_BOUNDED_SIZE_HERE___]  => Cores[c][4];    // Ack
+
+          // Connect the outputs of the forwared ___AUTO_INSERT_SIZE_HERE___x___AUTO_INSERT_SIZE_HERE___ (processors to memory units, stage 2 or output stage) to the memory units
+          P2MNetwork[c]   => MemUnits[c][0];     // Data
+          MemUnits[c][0]  => P2MNetwork[c+___AUTO_INSERT_LOWER_BOUNDED_SIZE_HERE___]; // Ack
+
+          // Connect the memory units to the inputs of the reverse ___AUTO_INSERT_SIZE_HERE___x___AUTO_INSERT_SIZE_HERE___ (memory units to processors, stage 0 or input stage)
+          MemUnits[c][1]     => M2PNetwork[c];  // Data
+          M2PNetwork[c+___AUTO_INSERT_LOWER_BOUNDED_SIZE_HERE___] => MemUnits[c][1]; // Ack
+
+          // Connect the outputs of the reverse ___AUTO_INSERT_SIZE_HERE___x___AUTO_INSERT_SIZE_HERE___ (memory units to processors, stage 2 or output stage) to the processors' inputs
+          M2PNetwork[c]  => Cores[c][0];        // Data
+          Cores[c][4]    => M2PNetwork[c+___AUTO_INSERT_LOWER_BOUNDED_SIZE_HERE___]; // Ack
+
+      }
+
+   } // end of connections
+
+} // end systemtwo SysTwo___AUTO_INSERT_SIZE_HERE___x___AUTO_INSERT_SIZE_HERE___DotProduct
+
