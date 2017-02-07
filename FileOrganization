@@ -1,0 +1,8 @@
+File organization
+
+What in this Zephyr/src/FunJava/MyStuff folder
+1. In the src/FunJava/MyStuff folder there are two additional folders and a zip file. The "convolution" folder holds the Convolution1D file containing all necessary classes to operate the program.
+
+2. The convolution.zip has all the convolution files including the Convolution1D.java file that contains the main. Instead of having all the classes within one .java file, the classes each have their own file.
+
+3. convolve folder - contains supporting documents for the Convolution1D.java file within the convolution folder
